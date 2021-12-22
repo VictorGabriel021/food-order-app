@@ -13,7 +13,7 @@
   margin-right: 10px;
 }
 
-.header span {
+.header .qtdItems {
   background: #af390a;
   padding: 6px 12px;
   border-radius: 40%;

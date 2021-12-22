@@ -6,3 +6,8 @@
   min-height: 200px;
   content-visibility: auto;
 }
+
+.card h2 {
+  font-size: 2rem;
+  margin-top: 0;
+}

@@ -8,9 +8,11 @@ const Header = () => {
       <header className={styles.header}>
         <h1>ReactMeals</h1>
         <HeaderButton>
-          <i className="fas fa-shopping-cart"></i>
-          Your Cart
-          <span>10</span>
+          <span>
+            <i className="fas fa-shopping-cart"></i>
+          </span>
+          <span>Your Cart</span>
+          <span className={styles.qtdItems}>10</span>
         </HeaderButton>
       </header>
       <div className={styles["main-image"]}>
