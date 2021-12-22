@@ -7,7 +7,7 @@ const Header = () => {
     <>
       <header className={styles.header}>
         <h1>ReactMeals</h1>
-        <HeaderButton>
+        <HeaderButton onClick={() => {}}>
           <span>
             <i className="fas fa-shopping-cart"></i>
           </span>
