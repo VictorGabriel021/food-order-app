@@ -27,7 +27,7 @@ const OrderForm = (props) => {
     enteredValueHandler: postalCodeChangeHandler,
     inputBlurHandler: postalCodeBlurHandler,
     reset: postalCodeReset,
-  } = useInput((value) => value.trim() === 5);
+  } = useInput((value) => value.trim().length === 5);
 
   const {
     value: cityValue,
@@ -55,6 +55,12 @@ const OrderForm = (props) => {
   const confirmHandler = (event) => {
     event.preventDefault();
     if (formIsValid) {
+      props.onSubmitForm({
+        name: nameValue,
+        street: streetValue,
+        city: cityValue,
+        postalCode: postalCodeValue,
+      });
       nameReset();
       streetReset();
       postalCodeReset();
@@ -84,7 +90,7 @@ const OrderForm = (props) => {
           onChange={streetChangeHandler}
           onBlur={streetBlurHandler}
         />
-        {streetError && <label>Name is Empty</label>}
+        {streetError && <label>Street is Empty</label>}
       </div>
       <div className={postalCodeErrorClass}>
         <label htmlFor="postal">Postal Code</label>
@@ -95,7 +101,7 @@ const OrderForm = (props) => {
           onChange={postalCodeChangeHandler}
           onBlur={postalCodeBlurHandler}
         />
-        {postalCodeError && <label>Name is Empty</label>}
+        {postalCodeError && <label>Postal Code has 5 digits</label>}
       </div>
       <div className={cityErrorClass}>
         <label htmlFor="city">City</label>
@@ -106,7 +112,7 @@ const OrderForm = (props) => {
           onChange={cityChangeHandler}
           onBlur={cityBlurHandler}
         />
-        {cityError && <label>Name is Empty</label>}
+        {cityError && <label>City is Empty</label>}
       </div>
       <div className={styles.actions}>
         <button type="button" onClick={props.onCancel}>
