@@ -1,36 +1,41 @@
 import MealItem from "../MeatItem/MealItem";
 import styles from "./MealList.module.css";
 import Card from "../../UI/Card/Card";
-
-const DUMMY_LIST = [
-  {
-    id: "m1",
-    name: "Sushi",
-    description: "Finest fish and veggies",
-    price: 22.99,
-  },
-  {
-    id: "m2",
-    name: "Schnitzel",
-    description: "A german specialty!",
-    price: 16.5,
-  },
-  {
-    id: "m3",
-    name: "Barbecue Burger",
-    description: "American, raw, meaty",
-    price: 12.99,
-  },
-  {
-    id: "m4",
-    name: "Green Bowl",
-    description: "Healthy...and green...",
-    price: 18.99,
-  },
-];
+import { useCallback, useEffect, useState } from "react";
 
 const MealList = () => {
-  const meatList = DUMMY_LIST.map((meal) => (
+  const [menu, setMenu] = useState([]);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const getMenuList = useCallback(async () => {
+    try {
+      const response = await fetch(
+        "https://react-http-af3fd-default-rtdb.firebaseio.com/meals.json"
+      );
+
+      if (!response.ok) {
+        throw new Error("Algo deu errado!");
+      }
+
+      const data = await response.json();
+      const menuList = [];
+
+      for (let obj in data) {
+        menuList.push({ ...data[obj], id: obj });
+      }
+      setMenu(menuList);
+    } catch (err) {
+      setError(err.message);
+    }
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getMenuList();
+  }, [getMenuList]);
+
+  const meatList = menu.map((meal) => (
     <MealItem
       id={meal.id}
       key={meal.id}
@@ -39,6 +44,22 @@ const MealList = () => {
       price={meal.price}
     />
   ));
+
+  if (isLoading) {
+    return (
+      <section className={styles.MealsLoading}>
+        <p>Loading...</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className={styles.MealsError}>
+        <p>{error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.meals}>
